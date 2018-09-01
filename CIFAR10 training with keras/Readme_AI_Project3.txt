@@ -1,0 +1,60 @@
+The best accuracy that I got with CNN model is 82.9% and the test loss is 0.6866
+The best accuracy that I got with ResNet18 model is 91.30% and the test loss is 0.4377
+
+Best Model Architecture for CNN:
+
+model = Sequential()
+model.add(Convolution2D(32, (3, 3),padding='same', input_shape=x_train.shape[1:]))
+model.add(Activation('relu'))
+model.add(Convolution2D(48, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
+model.add(Convolution2D(96, (3, 3), padding='same'))
+model.add(Activation('relu'))
+model.add(Convolution2D(96, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
+model.add(Convolution2D(192, (3, 3), padding='same'))
+model.add(Activation('relu'))
+model.add(Convolution2D(192, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
+model.add(Flatten())
+model.add(Dense(512))
+model.add(Activation('relu'))
+model.add(Dropout(0.5))
+model.add(Dense(256))
+model.add(Activation('relu'))
+model.add(Dropout(0.5))
+model.add(Dense(num_classes))
+model.add(Activation('softmax'))
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+
+
+Best Model for ResNet18:
+
+min_lr=0.5e-6 // minimum learning rate
+batch_size = 32
+nb_epoch = 100
+
+
+
+Experience:
+
+While training the default CNN model which was given to us, we got a test loss of 0.7216 and a test accuracy of 75.59%. When I changed the number of filters from 32 to 64 in the first and second layer and 128 in the third layer with a filter size of 2x2 and changing the padding mode to valid with pooling size 4x4 and activation function as 'sigmoid', I was unable to classify these images on the test set. It resulted in an accuracy of just 10%. 
+
+Then I changed the optimizer function to 'SGD'. Here the number of filters in all the layers were kept constant(32) and the padding mode used was 'valid'. Varying this, the learning rate was set to 0.01 and decay to 1e-6. All the other parameters were kept constant to that of the default model. Here the test loss was reported to be 1.193 and test accuracy was reported to be 57.59%. 
+
+Then I changed the optimizer function to 'Adagrad'. The parameters of the Adagrad function are as follows: learning rate = 0.01, epsilon = none, decay = 0.0. Here I introduced the stride length of 2 in the first convolutional layer and achieved the test loss of 0.988 and test acuracy of 64.48%. 
+
+Then I went to on to use 'Adamax' optimizer function. Here the stride length was also set to 2. The test loss was reported to be 1.0023 and test accuracy was reported to be 65.86%. 
+
+Then I used 'Adadelta' optimizer function. Here the learining rate was set to 1.0, rho = 0.95, epsilon = none, decay = 0.0. Here the number of strides was set to 1. The accuracy reported was 77.78% and the test loss was 0.6997. Then the number of epochs was increased to 100 but that did not result in an improvement in the test accuracy. The test accuracy achieved here was 76.22%.
+
+Then I changed  the optimizer function to 'adam'. The batch size was set to 128 and number of epochs was set to 200. Here the numbers of filters used in convolutional layers were 32,48,96,96,192,192 respectively. The pool size was set to 2x2 and dropout value used was 0.25,0.25,0.25,0.5 and 0.5 respectively. Here the number of connected layers used were 2 with 512 neurons in the first layer and 256 neurons in the second layer. The test accuracy reported in this case was optimal which is 82.9% and the test loss is 0.6866. 
+
+With CNN model, the accuracy was not going over 90% Then I tried to change the model from CNN to ResNet18.I trained a ResNet18 model using the optimizer 'rmsprop' and ran it for 100 epochs. Here the batch size was set to 32. This produced an accuracy of 91.30% on the test set with a loss of 0.4377. This was the best model that I finally come up with CIFAR 10 dataset.   
