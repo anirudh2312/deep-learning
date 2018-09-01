@@ -36,7 +36,6 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 
 
 Best Model for ResNet18:
-
 min_lr=0.5e-6 // minimum learning rate
 batch_size = 32
 nb_epoch = 100
